@@ -6,7 +6,7 @@ diary(dfile)
 diary on
 
 %Define the event log.
-Event_Log = ["b","ce", "ce", "cf", "cfa", "cfa"]
+Event_Log = get_event_log
 
 %Get the DFA from the event log.
 [Q, Sigma, delta, q_0, F] = DFA_construct(Event_Log)
