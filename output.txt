@@ -1,0 +1,55 @@
+
+Event_Log = 
+
+  1×5 <a href="matlab:helpPopup string" style="font-weight:bold">string</a> array
+
+    "ce"    "cf"    "ce"    "cf"    "ce"
+
+
+Q = 
+
+  2×4 <a href="matlab:helpPopup string" style="font-weight:bold">string</a> array
+
+    "0"    "1"    "2"     "3" 
+    ""     "c"    "ce"    "cf"
+
+
+Sigma = 
+
+  1×3 <a href="matlab:helpPopup string" style="font-weight:bold">string</a> array
+
+    "c"    "e"    "f"
+
+
+delta = 
+
+  3×5 <a href="matlab:helpPopup string" style="font-weight:bold">string</a> array
+
+    "0"    ""     "c"    "1"    "c" 
+    "1"    "c"    "e"    "2"    "ce"
+    "1"    "c"    "f"    "3"    "cf"
+
+
+q_0 = 
+
+  2×1 <a href="matlab:helpPopup string" style="font-weight:bold">string</a> array
+
+    "0"
+    ""
+
+
+F = 
+
+  2×2 <a href="matlab:helpPopup string" style="font-weight:bold">string</a> array
+
+    "2"     "3" 
+    "ce"    "cf"
+
+
+P =
+
+         0    1.0000         0         0
+         0         0    0.6000    0.4000
+    1.0000         0         0         0
+    1.0000         0         0         0
+
