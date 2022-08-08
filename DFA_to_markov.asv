@@ -3,7 +3,7 @@ function P = DFA_to_markov(delta, A)
 %%transition matrix. See read me for output format.
 
 %Initialise the transition matrix.
-P = zeros((size(delta,1) + 1));
+P = zeros((size(delta,1)+1));
 
 for i = 1:size(delta,1)
     %Set current state and it's corresponding prefix.
@@ -50,34 +50,29 @@ for i = 1:size(delta,1)
                 current_observation = string(current_observation(1:strlength(current_string)));
             else
                 current_observation_prefix = string(current_observation(1:...
-                    (length(current_observation)-1)));
+                    (strlength(current_observation)-1)));
                 current_observation = string(current_observation);
             end
 
             %Check if current observation matches the 
             if current_observation == current_string
-                %If matches increment the state count.
                 count_state = count_state + 1;
             end
 
-            %Check how many times the prefix is in the event log.
+            %Check how many times the prefix is in the log.
             if current_observation_prefix == current_prefix
-                %If matches increment the prefix count
                 count_prefix = count_prefix + 1;
             end
         end
 
-        %Calculate the transition probability. It is the number of observations of the state divided
-        %by the number of observations of the prefix.
+        %Calculate the transition probability.
         P((str2double(delta(i,1)) + 1), (str2double(delta(i,4)) + 1)) = (count_state/count_prefix);
     end
 end
 
-%For the transition matrix to be valid the final states need to loop back to the initial state.
+%Now we need to loop final states back to the intial state.
 for i = 1:length(P)
-    %Check if state is a final state.
     if sum(P(i,:)) == 0
-        %If the state is final then connect to initial state with probability 1.
         P(i,1) = 1;
     end
 end

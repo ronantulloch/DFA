@@ -1,100 +1,98 @@
 function [Q, Sigma, delta, q_0, F] = DFA_construct(A)
 %%This function accepts a finite event log formatted as a string array and outputs the 5 elements 
-%%of a DFA.
+%%of a DFA. See read me for output formats.
 
 %Check if the event log is in the correct format.
 if isstring(A) == 0
-    %Note if any input is a string it will force all other inputs to be strings also
+    %Note if any input is a string it will force all array elements to be strings.
     error("Event Log must consist of strings only.")
 end
 
-%First let's generate the alphabet from the event log.
+%Generate the alphabet from the event log.
 Sigma = (strjoin(A, ""));
 Sigma = unique(split(Sigma, ""))';
-Sigma = Sigma(Sigma ~= ""); %Remove the empty string.
+Sigma = Sigma(Sigma ~= ""); %Remove the empty strings at the start and end of the alphabet.
 
-%Now let's initialise our initial and final state spaces.
-q_0 = ""; %The initial state is determined by the empty string.
-F = unique(A); %Final states are the unique events in the event log.
+%Define the initial and final state spaces. 
+q_0 = ""; %Per convention the initial space is an empty string.
+F = unique(A); %Final states are all unique outcomes of the event log.
 
-%Let's grab the prefixes of the event log.
-%Initialise the prefixes array.
+%Get the intermediate steps of the DFA.
+%The intermediate steps are the set of unique prefixes of the final states in F.
 prefixes = [];
 for i = 1:length(F)
-    current_string = char(F(i)); %Set the current string.
+    %Set the current final state as the current string.
+    current_string = char(F(i));
 
     %Find all prefixes of current final state.
     for j = 1:(length(current_string) - 1)
 
-        %Get prefix and add to collection of states
+        %Get prefix and append to collection of states
         current_prefix = string(current_string(1:j));
         prefixes = [prefixes, current_prefix];
     end
 end
 
-%Get the unique states
+%Account for duplicate prefixes and grab unique elements.
 prefixes = unique(prefixes);
 
-%Declare the entire state space
-Q = [q_0,prefixes, F];
+%Define the full state space, the union of initial, intermediate(prefixes) and final states.
+Q = unique([q_0, prefixes, F]); %Check in case a prefix is also a final state.
 
-%Get the numbers of the states
-state_names = string(num2cell(0:(length(Q))-1));
-
-%Group the numbering of the states with the alphabetical states.
+%Number the states in Q with q_0 = 0 as reference and append to state space.
+state_names = string(num2cell(0:(length(Q)) - 1));
 Q = vertcat(state_names, Q);
 
-%Finally let's get delta, the transitions.
-delta = string([]); %Initialise the transition
-%Set up the delta index.
-delta_index = 1;
-
-%First loop over each state in the DFA
-for i = 1:length(Q)
-
-    %Initialise the current state
-    current_string = Q(2,i);
-
-    %Loop over the alphabet.
-    for j=1:length(Sigma)
-
-        %Add letter from alphabet to current state
-        new_string = strcat(current_string, Sigma(j));
-
-        %Compare new string to states in Q.
-        for k = 1:length(Q)
-
-            %Check if new string lies in Q.
-            if new_string == Q(2,k)
-
-                %If new string lies in Q add the transition to delta.
-                delta(delta_index,:) = [Q(1,i), current_string , Sigma(j), Q(1,k), new_string];
-
-                %Increment index to next entry in delta.
-                delta_index = delta_index + 1;
-
-                %Stop comparing new string to Q and try adding another
-                %letter from the alphabet to current prefix.
-                break
-            end
-        end
-    end
-end
-
-%Get the state number of the initial state.
+%Add the state number to the initial state.
 q_0 = [0; q_0];
 
-%Get the state numbers of the final states.
+%Get state numbers of final states.
 for i = 1:length(F)
     for j = 1:length(Q)
         %Find which state number selected final state is.
         if F(i) == Q(2,j)
-            F_state{i} = j-1;
+            F_state(i) = j-1; %Account for reference state number = 0.
         end
     end
 end
 
 %Add the state numbers to F
 F = vertcat(F_state, F);
+
+%Obtain delta, the transitions.
+delta = string([]);
+%Set up the delta index.
+delta_index = 1;
+
+%Loop over each state in the DFA
+for i = 1:length(Q)
+
+    %Set the current state.
+    current_string = Q(2,i);
+
+    %Loop over the alphabet.
+    for j=1:length(Sigma)
+
+        %Add letter from alphabet to current state to form new possible state.
+        new_string = strcat(current_string, Sigma(j));
+
+        %Loop over all states in Q
+        for k = 1:length(Q)
+
+            %If new string matches another possible state in Q, create a transition entry.
+            if new_string == Q(2,k)
+
+                %If new string lies in Q add the transition to delta.
+                delta(delta_index,:) = [Q(1,i), current_string , Sigma(j), Q(1,k), new_string];
+
+                %Increment index to add next transition entry.
+                delta_index = delta_index + 1;
+
+                %Stop checking for match and consider new symbol from Sigma.
+                break
+            end
+        end
+    end
+end
 
 end
