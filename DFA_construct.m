@@ -90,6 +90,7 @@ for i = 1:length(Q)
 
                 %Stop checking for match and consider new symbol from Sigma.
                 break
+                
             end
         end
     end
