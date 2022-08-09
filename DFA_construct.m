@@ -19,7 +19,7 @@ F = unique(A); %Final states are all unique outcomes of the event log.
 
 %Get the intermediate steps of the DFA.
 %The intermediate steps are the set of unique prefixes of the final states in F.
-prefixes = [];
+prefixes = "";
 for i = 1:length(F)
     %Set the current final state as the current string.
     current_string = char(F(i));

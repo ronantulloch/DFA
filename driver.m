@@ -1,5 +1,5 @@
 %Define Event Log
-A = ["a","abc", "abc", "abce", "abce","abcea"];
+A = ["a","b", "c", "d"];
 
 %Get DFA
 get_DFA(A);
