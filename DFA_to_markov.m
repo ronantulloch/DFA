@@ -41,7 +41,7 @@ for i = 1:size(delta,1)
         end
     end
         %Calculate the probability of going from prefix state to current state.
-        P((str2num(delta(i,1)) + 1), (str2num(delta(i,4))+ 1 )) = count_state/count_prefix;
+        P((str2double(delta(i,1)) + 1), (str2double(delta(i,4))+ 1 )) = count_state/count_prefix;
 end
 
 %Fix any missing transition probabilities

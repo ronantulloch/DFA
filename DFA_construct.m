@@ -61,12 +61,12 @@ F = vertcat(F_state, F);
 
 %Obtain delta, the transitions.
 delta = string([]);
+
 %Set up the delta index.
 delta_index = 1;
 
 %Loop over each state in the DFA
 for i = 1:length(Q)
-
     %Set the current state.
     current_string = Q(2,i);
 
@@ -78,10 +78,8 @@ for i = 1:length(Q)
 
         %Loop over all states in Q
         for k = 1:length(Q)
-
             %If new string matches another possible state in Q, create a transition entry.
             if new_string == Q(2,k)
-
                 %If new string lies in Q add the transition to delta.
                 delta(delta_index,:) = [Q(1,i), current_string , Sigma(j), Q(1,k), new_string];
 
