@@ -1,5 +1,5 @@
 %Define Event Log
-A = ["a", "b", "B", "Bb"];
+A = ["a", "b", "B", "Bb5"];
 
 % To demonstrate lack of cycles
 %A = ["aaaaa","abbb"];
